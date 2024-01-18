@@ -6,11 +6,14 @@
     <title>Makeup Web</title>
 </head>
 <body>
+    {% extends 'base.html' %}
+    {% block content %}
     {{error}}
     <form method="post">
         {% csrf_token %}
         {{form.as_p}}
         <button>Sign Up</button>
     </form>
+    {% endblock %}
 </body>
 </html>

@@ -1,11 +1,14 @@
 from django.shortcuts import render,redirect
-from django.http import HttpResponse
+
 from rest_framework import viewsets
 from .serializer import ProductSerializer
 from .models import Product
 
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
+from django.contrib.auth import login,logout, authenticate
+
+from django.db import IntegrityError
 # Create your views here.
 
 def home(request):
@@ -22,21 +25,42 @@ def signup(request):
             try:
                 user = User.objects.create_user(username=request.POST['username'], password=request.POST['password1'])
                 user.save()
-                return HttpResponse('Usuario creado')
-            except:
+                login(request, user)
+                return redirect('products')
+            except IntegrityError:
                 return render(request, "signup.html",{
                         "form": UserCreationForm,
                         "error":"Usuario ya existe paaaa"
                     })
-        
-        print(request.POST)
         return render(request, "signup.html",{
             "form": UserCreationForm,
             "error":"Las contraseñas no coinciden"
         })
-    return render(request, "signup.html",{
-        "form": UserCreationForm
-    })
+
+def products(request):
+    return render(request, "products.html")
+
+def signout(request):
+    logout(request)
+    return redirect("home")
+
+def signin(request):
+    if request.method == 'GET':
+        return render(request, "signin.html",{
+            "form":AuthenticationForm
+        })
+    else:
+        user = authenticate(request, username= request.POST['username'], password=request.POST['password'])
+        
+        if user is None:
+            return render(request, "signin.html",{
+                "form":AuthenticationForm,
+                "error":"Usuario o contraseña incorrectos"
+            })
+        else:
+            login(request, user)
+            return redirect("products")
+        
 class ProductView(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
