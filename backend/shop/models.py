@@ -4,10 +4,18 @@ from django.utils import timezone
 # Create your models here.
 
 class ExtraDataUser(models.Model):
+    '''
+    Tabla modelo que almacena datos extra del usuario
+    - Creado para no tener que alterar el model User que nos da Django por default, va conectado por una fk user_id -
+    '''
     user_id = models.ForeignKey(User, on_delete= models.CASCADE)
     numero_telefono = models.CharField(max_length=15, help_text='Ingrese su número de teléfono')
 
 class Direccion(models.Model):
+    '''
+    Tabla modelo para almacenar direcciones
+    - Pueden ser de Facturación o de envío -
+    '''
     DIRTYPE = {'billing':'FACTURACIÓN', 'envio':'ENVÍO'}
     dir_user = models.ForeignKey(User, on_delete= models.CASCADE)
     dir_calle = models.CharField(max_length=100)
@@ -16,6 +24,12 @@ class Direccion(models.Model):
     dir_codigopostal = models.IntegerField()
     dir_type = models.CharField(max_length = 20, choices=DIRTYPE, default='FACTURACIÓN' )
 class Product(models.Model):
+    '''
+    Tabla modelo del Producto, almacena datos del producto
+    - La imagen se guarda en la parte de ../media/productos 
+    Todas las imagenes se guardan en ../media (eso esta en settings.py)
+    si se quiere cambiar la subcarpeta donde se guarda debemos cambiar el param "upload_to" -
+    '''
     product_name = models.CharField(max_length=100)
     product_description = models.CharField(max_length=400)
     product_image = models.ImageField(upload_to="productos/")
@@ -26,15 +40,26 @@ class Product(models.Model):
     def _str_(self):
         return self.product_name
 class Carrito(models.Model):
+    '''
+    Tabla modelo que representa el carrito de compras de un usuario
+    '''
     carrito_creado = models.DateTimeField(default=timezone.now)
     carrito_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class CarritoArticles(models.Model):
+    '''
+    Tabla modelo que representa los articulos que se encuentran en el carrito de compras, es una tabla 
+    intermediaria para asociar varios productos a un mismo carrito, para obtener todos los productos
+    de un carrito tendriamos que filtrar los productos por id del carrito
+    '''
     carrito_id = models.ForeignKey(Carrito, on_delete=models.CASCADE)
     product_id = models.ForeignKey(Product, on_delete = models.CASCADE)
     cantidad = models.IntegerField() 
 
 class Pedido(models.Model):
+    '''
+    Tabla modelo que representa el pedido (ticket de super por asi decirlo)
+    '''
     STATES = {'pend':'PENDIENTE', 'sent':'ENVIADO', 'cancel':'CANCELADO' }
     METHOD = {'deb':'DEBITO', 'cred':'CREDITO', 'trans':'TRANSFERENCIA'}
     pedido_date = models.DateTimeField(auto_now_add = True)
@@ -49,6 +74,11 @@ class Pedido(models.Model):
         return f'Pedido #{self.id} - {self.pedido_user.username}'
     
 class ProductosPedido(models.Model):
+    '''
+    Tabla modelo que representa los productos de un pedido, es una tabla intermediaria para relacionar
+    un mismo pedido a varios productos, para obtener todos los productos de un pedido tendríamos que hacer
+    una consulta y filtrar los productos por id del pedido
+    '''
     pedido_id = models.ForeignKey(Pedido, on_delete=models.CASCADE)
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
     cantidad = models.IntegerField()
