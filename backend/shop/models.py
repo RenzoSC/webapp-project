@@ -23,6 +23,27 @@ class Direccion(models.Model):
     dir_pais = models.CharField(max_length=100)
     dir_codigopostal = models.IntegerField()
     dir_type = models.CharField(max_length = 20, choices=DIRTYPE, default='FACTURACIÓN' )
+
+class ProductCategory(models.Model):
+    CATEGORY_CHOICES = [
+        ('herramientas', 'Herramientas'),
+        ('maquillaje', 'Maquillaje'),
+        ('skincare', 'Skincare'),
+        ('esponjas', 'Esponjas'),
+        ('brochas', 'Brochas'),
+        ('limpiadores', 'Limpiadores'),
+        ('rostro', 'Rostro'),
+        ('ojos', 'Ojos'),
+        ('labios', 'Labios'),
+        ('hidratantes', 'Hidratantes'),
+        ('limpiadores', 'Limpiadores'),
+    ]
+    category= models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.category} (ID: {self.id})'
+
 class Product(models.Model):
     '''
     Tabla modelo del Producto, almacena datos del producto
@@ -36,8 +57,9 @@ class Product(models.Model):
     product_price = models.DecimalField(max_digits = 20, decimal_places=2)
     product_stock = models.IntegerField()
     product_dateAdded = models.DateTimeField(default=timezone.now)
+    product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
 
-    def _str_(self):
+    def __str__(self):
         return self.product_name
 class Carrito(models.Model):
     '''
