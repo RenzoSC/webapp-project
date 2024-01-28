@@ -5,7 +5,7 @@ function Contact() {
     <div className="flex flex-col h-screen">
       <ResponsiveNavBar/>
       <main className="flex-grow">
-        Contact nasheeee
+        Contact Nasheeee
       </main>
       <Footbar/>
     </div>

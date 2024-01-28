@@ -93,7 +93,7 @@ function ResponsiveNavBar() {
 
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>    {/*Items del menu en este caso los items de la pagina*/}
-                  <Typography textAlign="center" sx={{fontWeight: 700}}>{page}</Typography>
+                  <a href={'http://localhost:3000/' + page.toLowerCase()}>{page}</a>
                 </MenuItem>
               ))}
             </Menu>
