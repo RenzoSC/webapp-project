@@ -1,13 +1,13 @@
 import Footbar from "./Footbar";
-import NavBar from "./Navbar";
-function App() {
+import ResponsiveNavBar from "./Navbar";
+function Home() {
   return (
     <div className="flex flex-col h-screen">
-      <NavBar/>
+      <ResponsiveNavBar/>
       <main className="flex-grow"></main>
       <Footbar/>
     </div>
   );
 }
 
-export default App;
+export default Home;
