@@ -7,26 +7,25 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { Box } from '@mui/material';
-function ProductCard(){
+function ProductCard(props){
     return(
         <Card sx={{ maxWidth: 345 }}>
             <CardMedia
                 sx={{ height:220 }}
-                image="https://resizer.sevilla.abc.es/resizer/resizer.php?imagen=https://sevilla.abc.es/estilo/bulevarsur/wp-content/uploads/sites/14/2016/08/diccionario-maquillaje-principiantes.jpg&nuevoancho=652"
+                image={props.img}
                 title="green iguana"
             />
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
-                Maquillaje xd
+                {props.title}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                Pack de maquillaje nasi para q te veas como la trola que siempre quisiste ser
-                pedazo de puta
+                {props.description}
                 </Typography>
                 <Box sx={{display:"flex", alignItems:"center"}}>
                     <AttachMoneyIcon fontSize='medium' color='black'/>
                     <Typography variant="h5" color="black" sx={{display:"inline", fontWeight:"bold"}}>
-                    200
+                    {props.price}
                     </Typography>
                 </Box>
             </CardContent>

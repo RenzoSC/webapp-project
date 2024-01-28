@@ -28,7 +28,7 @@ urlpatterns = [
     path('', views.home, name="home"),              #Estas son las distintas urls que tendríamos de la página
     path('signup/', views.signup, name="signup"),
     path('api/', include(router.urls)),
-    path('products/', views.products, name="products"),
     path('logout/', views.signout, name="logout"),
     path('signin/', views.signin, name="signin"),
 ]
+#path('products/', views.products, name="products"),
