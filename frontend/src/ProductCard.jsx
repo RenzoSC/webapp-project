@@ -5,6 +5,8 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import { Box } from '@mui/material';
 function ProductCard(){
     return(
         <Card sx={{ maxWidth: 345 }}>
@@ -21,6 +23,12 @@ function ProductCard(){
                 Pack de maquillaje nasi para q te veas como la trola que siempre quisiste ser
                 pedazo de puta
                 </Typography>
+                <Box sx={{display:"flex", alignItems:"center"}}>
+                    <AttachMoneyIcon fontSize='medium' color='black'/>
+                    <Typography variant="h5" color="black" sx={{display:"inline", fontWeight:"bold"}}>
+                    200
+                    </Typography>
+                </Box>
             </CardContent>
             <CardActions>
                 <Button size="small">Añadir al carrito</Button>
