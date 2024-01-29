@@ -18,6 +18,9 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 from shop import views
 
 router = routers.DefaultRouter()
@@ -30,5 +33,7 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('logout/', views.signout, name="logout"),
     path('signin/', views.signin, name="signin"),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
 #path('products/', views.products, name="products"),

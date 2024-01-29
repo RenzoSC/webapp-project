@@ -37,6 +37,7 @@ class ProductCategory(models.Model):
         ('labios', 'Labios'),
         ('hidratantes', 'Hidratantes'),
         ('limpiadores', 'Limpiadores'),
+        ('prueba','Prueba')
     ]
     category= models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
