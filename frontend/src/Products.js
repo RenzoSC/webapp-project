@@ -16,8 +16,6 @@ function Products() {
             console.log(error);
           });
       }, []);
-    
-    console.log(productList);
     return (
         <div className="flex flex-col h-screen">
         <ResponsiveNavBar/>

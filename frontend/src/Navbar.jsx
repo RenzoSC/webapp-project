@@ -137,12 +137,12 @@ function ResponsiveNavBar() {
             ))}
           </Box>        
 
-          <Box sx={{ flexGrow: 0 }}>          {/* esto es del icono de cuenta*/}
+          {/* <Box sx={{ flexGrow: 0 }}>          
             <Tooltip title="Cuenta">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
               </IconButton>
-            </Tooltip>        {/*Esto es de ayuda xd*/}
+            </Tooltip>        
             
             <Menu
               sx={{ mt: '45px' }}
@@ -165,9 +165,9 @@ function ResponsiveNavBar() {
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
-            </Menu>           {/*Menu que se abre al hacer click en el icono de tu cuenta*/}
+            </Menu>    
 
-          </Box>
+          </Box> */}
         </Toolbar>
       </Container>
     </AppBar>

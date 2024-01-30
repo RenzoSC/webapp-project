@@ -25,12 +25,12 @@ from shop import views
 
 router = routers.DefaultRouter()
 router.register(r'products', views.ProductView, 'product')
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name="home"),              #Estas son las distintas urls que tendríamos de la página
     path('signup/', views.signup, name="signup"),
     path('api/', include(router.urls)),
+    path('api/', include('shop.urls')),
     path('logout/', views.signout, name="logout"),
     path('signin/', views.signin, name="signin"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
