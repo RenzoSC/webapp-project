@@ -43,7 +43,7 @@ function SignIn() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" method="POST" action="http://127.0.0.1:8000/api/login" onSubmit={e => submitLogin(e)}>
+          <form className="space-y-6" method="POST" onSubmit={e => submitLogin(e)}>
             <div>
               <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">Username</label>
               <div className="mt-2">
