@@ -5,6 +5,7 @@ import Home from './Home';
 import reportWebVitals from './reportWebVitals';
 import Contact from './Contact';
 import Products from './Products';
+import SignIn from './SignIn';
 import {createBrowserRouter, RouterProvider} from 'react-router-dom';
 
 const router = createBrowserRouter([{
@@ -21,7 +22,7 @@ const router = createBrowserRouter([{
 },
 {
   path:'/login',
-  element:<Products/>
+  element:<SignIn/>
 },
 {
   path:'/register',

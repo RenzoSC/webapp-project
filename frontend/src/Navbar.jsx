@@ -16,7 +16,7 @@ import axios from 'axios'
 const pages = ["Productos", "Contactos", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
-axios.defaults.xsrfHeaderName = "e6egt2PUm1Dabm9sYeR5V5Hbrc2mmkOw";
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.withCredentials = true;
 
