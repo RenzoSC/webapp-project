@@ -13,8 +13,9 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import axios from 'axios'
+import { useNavigate } from "react-router-dom";
+
 const pages = ["Productos", "Contactos", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -42,6 +43,17 @@ function ResponsiveNavBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const navigate = useNavigate();
+  
+  const handleLogout = (e)=>{
+    e.preventDefault();
+    handleCloseUserMenu();
+    client.post("http://127.0.0.1:8000/api/logout",{withCredentials:true}).then(()=>{
+      console.log("logout");
+      navigate('/');
+    }).catch((error)=>{console.log(error)})
+  }
 
   const [currentUser, setCurrentUser] = React.useState(null);
   React.useEffect(()=>{
@@ -114,11 +126,18 @@ function ResponsiveNavBar() {
           open={Boolean(anchorElUser)}
           onClose={handleCloseUserMenu}
         >
-          {settings.map((setting) => (
-            <MenuItem key={setting} onClick={handleCloseUserMenu}>
-              <Typography textAlign="center">{setting}</Typography>
-            </MenuItem>
-          ))}
+          <MenuItem onClick={handleCloseUserMenu}>
+            <Typography textAlign="center">Perfil</Typography>
+          </MenuItem>
+          <MenuItem onClick={handleCloseUserMenu}>
+            <Typography textAlign="center">Favoritos</Typography>
+          </MenuItem>
+          <MenuItem onClick={handleCloseUserMenu}>
+            <Typography textAlign="center">Historial de compras</Typography>
+          </MenuItem>
+          <MenuItem onClick={e=>{handleLogout(e)}}>
+            <Typography textAlign="center">Logout</Typography>
+          </MenuItem>
         </Menu>
       </Box>
     );
