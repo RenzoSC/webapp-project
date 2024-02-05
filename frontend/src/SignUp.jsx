@@ -1,16 +1,8 @@
 import Footbar from "./Footbar";
 import ResponsiveNavBar from "./Navbar";
-import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-axios.defaults.xsrfHeaderName = "X-CSRFToken";
-axios.defaults.xsrfCookieName = "csrftoken";
-axios.defaults.withCredentials = true;
-
-const client = axios.create({
-  baseURL: "http://127.0.0.1:8000",
-});
+import { client } from "./axiosConfig";
 
 function SignUp() {
   const [email, setEmail] = useState("");
@@ -18,10 +10,10 @@ function SignUp() {
   const [username, setUsername] = useState("");
 
   const navigate = useNavigate();
-  function submitLogin(e) {
+  function submitSignup(e) {
     e.preventDefault();
     client
-      .post("http://127.0.0.1:8000/api/register", {
+      .post("/api/register", {
         username: username,
         password: password,
         email: email,
@@ -30,7 +22,7 @@ function SignUp() {
         console.log("registered");
 
         client
-          .post("http://127.0.0.1:8000/api/login", {
+          .post("/api/login", {
             username: username,
             password: password,
           })
@@ -61,7 +53,7 @@ function SignUp() {
           <form
             className="space-y-6"
             method="POST"
-            onSubmit={(e) => submitLogin(e)}
+            onSubmit={(e) => submitSignup(e)}
           >
             <div>
               <label

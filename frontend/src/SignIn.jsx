@@ -1,16 +1,8 @@
 import Footbar from "./Footbar";
 import ResponsiveNavBar from "./Navbar";
-import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-axios.defaults.xsrfCookieName = "csrftoken";
-axios.defaults.withCredentials = true;
-
-const client = axios.create({
-  baseURL: "http://127.0.0.1:8000"
-});
+import { client } from "./axiosConfig";
 
 function SignIn() {
 
@@ -20,7 +12,7 @@ function SignIn() {
   const navigate = useNavigate();
   function submitLogin(e){
     e.preventDefault();
-    client.post("http://127.0.0.1:8000/api/login",{
+    client.post("/api/login",{
       "username":username,
       "password":password,
     })

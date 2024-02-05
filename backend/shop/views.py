@@ -8,7 +8,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm  #for
 from django.contrib.auth.models import User
 from django.contrib.auth import login,logout, authenticate, get_user_model     #funciones para cookies y autenticació de login
 
-from rest_framework.authentication import SessionAuthentication
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
@@ -107,13 +107,11 @@ class UserLogin(APIView):
             login(request, user)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
-
 class UserLogout(APIView):
-    permission_classes = (permissions.AllowAny,)
-
+    authentication_classes = (TokenAuthentication,)
     def post(self, request):
         logout(request)
-        return Response(status=status.HTTP_200_OK) 
+        return Response(status=status.HTTP_200_OK)
 class UserView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (SessionAuthentication,)

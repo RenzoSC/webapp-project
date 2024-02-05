@@ -12,18 +12,9 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import axios from 'axios'
-import { useNavigate } from "react-router-dom";
+import { client } from "./axiosConfig";
 
 const pages = ["Productos", "Contactos", "Blog"];
-
-axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-axios.defaults.xsrfCookieName = "csrftoken";
-axios.defaults.withCredentials = true;
-
-const client = axios.create({
-  baseURL: "http://127.0.0.1:8000"
-});
 
 function ResponsiveNavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -43,15 +34,13 @@ function ResponsiveNavBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
-  const navigate = useNavigate();
   
-  const handleLogout = (e)=>{
+  function submitLogout(e){
     e.preventDefault();
-    handleCloseUserMenu();
-    client.post("http://127.0.0.1:8000/api/logout",{withCredentials:true}).then(()=>{
+    console.log("xd");
+    client.post("/api/logout").then(()=>{
       console.log("logout");
-      navigate('/');
+      window.location.reload();
     }).catch((error)=>{console.log(error)})
   }
 
@@ -135,8 +124,10 @@ function ResponsiveNavBar() {
           <MenuItem onClick={handleCloseUserMenu}>
             <Typography textAlign="center">Historial de compras</Typography>
           </MenuItem>
-          <MenuItem onClick={e=>{handleLogout(e)}}>
-            <Typography textAlign="center">Logout</Typography>
+          <MenuItem >
+            <form method="POST" onSubmit={e=>{submitLogout(e)}}>
+              <button type="submit" className="text-center">Logout</button>
+            </form>
           </MenuItem>
         </Menu>
       </Box>
