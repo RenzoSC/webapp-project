@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 
 from rest_framework import viewsets
 from .serializer import ProductSerializer, UserLoginSerializer, UserRegisterSerializer, UserSerializer
-from .models import Product
+from .models import Product, ProductCategory
 
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm  #formularios para creación y login de usuario
 from django.contrib.auth.models import User
@@ -16,6 +16,7 @@ from rest_framework import permissions, status
 from .validation import custom_validation, validate_email, validate_password, validate_username
 
 from django.db import IntegrityError
+from django.db.models import Q 
 # Create your views here.
 
 '''
@@ -118,3 +119,26 @@ class UserView(APIView):
     def get(self, request):
         serializer = UserSerializer(request.user)
         return Response({'user':serializer.data}, status=status.HTTP_200_OK)
+
+class ProductDetail(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+
+    def get(self,request, categ,subcateg=''):
+        try:
+            category_obj = ProductCategory.objects.get(category= categ)
+            product_category = category_obj.id
+        except:
+            return Response("No existen productos con esta categoria xd",status=status.HTTP_404_NOT_FOUND)
+        if(subcateg != ''):
+            try:
+                subcategory_obj = ProductCategory.objects.get(category = subcateg)
+                subcategory = subcategory_obj.id
+                products = Product.objects.filter(product_category = product_category, product_subcategory = subcategory)
+                serializer = ProductSerializer(products, many=True)
+                return Response(serializer.data)
+            except:
+                return Response("No existen productos con esta subcategoria xd",status=status.HTTP_404_NOT_FOUND)
+        products = Product.objects.filter(product_category = product_category)
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data)

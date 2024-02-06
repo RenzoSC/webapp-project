@@ -58,7 +58,8 @@ class Product(models.Model):
     product_price = models.DecimalField(max_digits = 20, decimal_places=2)
     product_stock = models.IntegerField()
     product_dateAdded = models.DateTimeField(default=timezone.now)
-    product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
+    product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE, related_name='product_category')
+    product_subcategory = models.ForeignKey(ProductCategory, on_delete=models.CASCADE, related_name='product_subcategory')
 
     def __str__(self):
         return self.product_name
