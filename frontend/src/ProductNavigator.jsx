@@ -6,8 +6,12 @@ import ListItemText from '@mui/material/ListItemText';
 import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import axios from 'axios';
+import { useState } from 'react';
 
 function ProductNavigator(){
+  const [productList, setProductList] = useState([]);
+
     const [openSkin, setOpen] = React.useState(false);
 
     const handleClick = () => {
@@ -25,6 +29,15 @@ function ProductNavigator(){
     const handleClickHer = ()=>{
         setOpenHer(!openHer);
     }
+
+    function handleProductNavigation(e,category, subcategory){
+      const url = subcategory !== ""? `http://127.0.0.1:8000/api/products/${category}`: `http://127.0.0.1:8000/api/products/${category}/${subcategory}`;
+      axios.get(url).then(res=>{
+        setProductList(res.data)
+      }).catch(e=>{
+        console.error(e);
+      })
+    }
     return (
         <List
           sx={{ width: '100%', bgcolor: 'background.paper' }}
@@ -36,9 +49,9 @@ function ProductNavigator(){
             </ListSubheader>
           }
         >
-          <ListItemButton onClick={handleClickHer}>
+          <ListItemButton>
             <ListItemText primary="Herramientas y brochas" />
-            {openHer? <ExpandLess/>: <ExpandMore/>}
+            {openHer? <ExpandLess onClick={handleClickHer}/>: <ExpandMore onClick={handleClickHer}/>}
           </ListItemButton>
           <Collapse in={openHer} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
@@ -53,9 +66,9 @@ function ProductNavigator(){
                 </ListItemButton>
             </List>
           </Collapse>
-          <ListItemButton onClick={handleClickMaq}>
+          <ListItemButton >
             <ListItemText primary="Maquillaje" />
-            {openMaq? <ExpandLess/>: <ExpandMore/>}
+            {openMaq? <ExpandLess onClick={handleClickMaq}/>: <ExpandMore onClick={handleClickMaq}/>}
           </ListItemButton>
           <Collapse in={openMaq} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
@@ -70,9 +83,9 @@ function ProductNavigator(){
                 </ListItemButton>
             </List>
           </Collapse>
-          <ListItemButton onClick={handleClick}>
+          <ListItemButton>
             <ListItemText primary="Skincare" />
-            {openSkin ? <ExpandLess /> : <ExpandMore />}
+            {openSkin ? <ExpandLess onClick={handleClick}/> : <ExpandMore onClick={handleClick}/>}
           </ListItemButton>
           <Collapse in={openSkin} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
