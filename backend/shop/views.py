@@ -134,7 +134,7 @@ class ProductDetail(APIView):
             try:
                 subcategory_obj = ProductCategory.objects.get(category = subcateg)
                 subcategory = subcategory_obj.id
-                products = Product.objects.filter(product_category = product_category, product_subcategory = subcategory)
+                products = Product.objects.filter(Q(product_category=product_category) & Q(product_subcategory=subcategory))
                 serializer = ProductSerializer(products, many=True)
                 return Response(serializer.data)
             except:

@@ -8,6 +8,7 @@ import Products from './Products';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import {createBrowserRouter, RouterProvider} from 'react-router-dom';
+import { ProductContextProvider } from './ProductContext';
 
 const router = createBrowserRouter([{
   path:'/',
@@ -19,7 +20,7 @@ const router = createBrowserRouter([{
 },
 {
   path:'/productos',
-  element:<Products/>
+  element:(<ProductContextProvider><Products/></ProductContextProvider>)
 },
 {
   path:'/login',
