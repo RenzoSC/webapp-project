@@ -11,7 +11,7 @@ import { useContext } from 'react';
 import { ProductContext } from "./ProductContext";
 
 function ProductNavigator(){
-    const productValue = useContext(ProductContext)
+    const productValue = useContext(ProductContext);
 
     const [openSkin, setOpen] = React.useState(false);
 
@@ -32,12 +32,20 @@ function ProductNavigator(){
     }
 
     function handleProductNavigation(e,category, subcategory=""){
-      const url = subcategory === ""? `http://127.0.0.1:8000/api/productos/${category}`: `http://127.0.0.1:8000/api/productos/${category}/${subcategory}`;
-      console.log(url);
+      let url = subcategory === ""? `http://127.0.0.1:8000/api/productos/${category}`: `http://127.0.0.1:8000/api/productos/${category}/${subcategory}`;
+      productValue.setUrlNavigation(["productos",category]);
+      if(category=== ""){
+        productValue.setUrlNavigation(["productos"]);
+        url = "http://127.0.0.1:8000/api/products";
+      }
+      if (subcategory !== ""){
+        productValue.setUrlNavigation(["productos",category,subcategory]);
+      }
+      
       axios.get(url).then(res=>{
-        productValue.setProductList(res.data)
+        productValue.setProductList(res.data);
       }).catch(e=>{
-        console.error(e);
+        productValue.setProductList([]);
       })
     }
     return (
@@ -47,7 +55,18 @@ function ProductNavigator(){
           aria-labelledby="nested-list-subheader"
           subheader={
             <ListSubheader component="div" id="nested-list-subheader">
-              Productos:
+              {productValue.urlNavigation.map((elem,i)=>{
+                console.log(i);
+                let el = <span className='cursor-pointer' onClick={e=>{handleProductNavigation(e,"")}}>{elem}/</span>;
+                if(i===1){
+                  el = <span className='cursor-pointer' onClick={e=>{handleProductNavigation(e,elem)}}>{elem}/</span>;
+                }
+                if(i===2){
+                  el = <span className='cursor-pointer'>{elem}/</span>;
+                }
+                return (<span key={i}>{el}</span>);
+              })
+              }
             </ListSubheader>
           }
         >
