@@ -9,7 +9,7 @@ import SignIn from './SignIn';
 import SignUp from './SignUp';
 import { Routes, Route, BrowserRouter} from 'react-router-dom';
 import { ProductContextProvider } from './ProductContext';
-
+import { ProductDetail } from './ProductDetail';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -18,8 +18,9 @@ root.render(
       <Routes>
         <Route path='' element={<Home/>}/>
         <Route path='contactos' element={<Contact/>}/>
-        <Route path='productos' element={<ProductContextProvider><Products/></ProductContextProvider>}>
-        
+        <Route path='productos'>
+          <Route path=':productName' element={<ProductDetail/>}/>
+          <Route path='' element={<ProductContextProvider><Products/></ProductContextProvider>}/>
         </Route>
         <Route path='login' element={<SignIn/>}/>
         <Route path='register' element={<SignUp/>}/>

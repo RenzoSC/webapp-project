@@ -142,3 +142,19 @@ class ProductDetail(APIView):
         products = Product.objects.filter(product_category = product_category)
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
+    
+class ProductsView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+    def get(self, request, name=None):
+        if(name):
+            try:
+                product = Product.objects.get(product_name=name)
+                serializer = ProductSerializer(product)
+                return Response(serializer.data)
+            except Product.DoesNotExist:
+                return Response({"error": "Producto no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+        products = Product.objects.all()
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data)
+        

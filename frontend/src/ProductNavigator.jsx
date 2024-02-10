@@ -41,7 +41,7 @@ function ProductNavigator(){
       if (subcategory !== ""){
         productValue.setUrlNavigation(["productos",category,subcategory]);
       }
-      
+
       axios.get(url).then(res=>{
         productValue.setProductList(res.data);
       }).catch(e=>{
@@ -56,7 +56,6 @@ function ProductNavigator(){
           subheader={
             <ListSubheader component="div" id="nested-list-subheader">
               {productValue.urlNavigation.map((elem,i)=>{
-                console.log(i);
                 let el = <span className='cursor-pointer' onClick={e=>{handleProductNavigation(e,"")}}>{elem}/</span>;
                 if(i===1){
                   el = <span className='cursor-pointer' onClick={e=>{handleProductNavigation(e,elem)}}>{elem}/</span>;
