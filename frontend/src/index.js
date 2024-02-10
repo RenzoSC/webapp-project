@@ -7,35 +7,24 @@ import Contact from './Contact';
 import Products from './Products';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
-import {createBrowserRouter, RouterProvider} from 'react-router-dom';
+import { Routes, Route, BrowserRouter} from 'react-router-dom';
 import { ProductContextProvider } from './ProductContext';
-
-const router = createBrowserRouter([{
-  path:'/',
-  element:<Home/>
-},
-{
-  path:'/contactos',
-  element:<Contact/>
-},
-{
-  path:'/productos',
-  element:(<ProductContextProvider><Products/></ProductContextProvider>)
-},
-{
-  path:'/login',
-  element:<SignIn/>
-},
-{
-  path:'/register',
-  element:<SignUp/>
-}])
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router}/>
+    <BrowserRouter>
+      <Routes>
+        <Route path='' element={<Home/>}/>
+        <Route path='contactos' element={<Contact/>}/>
+        <Route path='productos' element={<ProductContextProvider><Products/></ProductContextProvider>}>
+        
+        </Route>
+        <Route path='login' element={<SignIn/>}/>
+        <Route path='register' element={<SignUp/>}/>
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );
 
