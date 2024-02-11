@@ -12,6 +12,7 @@ function Products() {
         axios.get("http://127.0.0.1:8000/api/products/")
           .then((res) => {
             productValue.setProductList(res.data);
+            productValue.setUrlNavigation(["productos"]);
           })
           .catch((error) => {
             console.log(error);
@@ -27,7 +28,7 @@ function Products() {
             </div>
             <div className="grid grid-cols-2 grid-rows-3 sm:grid-cols-3 xl:grid-cols-4 gap-4 p-4 flex-grow">
                 {productValue.productList.map((p,i)=>{
-                    return <ProductCard key={i} title={p.product_name} description={p.product_description} img={p.product_image} price={p.product_price}/>
+                    return <ProductCard key={i} product={p} title={p.product_name} description={p.product_description} img={p.product_image} price={p.product_price} stock={p.product_stock}/>
                 })}
             </div>
         </main>

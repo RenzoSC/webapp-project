@@ -19,7 +19,7 @@ root.render(
         <Route path='' element={<Home/>}/>
         <Route path='contactos' element={<Contact/>}/>
         <Route path='productos'>
-          <Route path=':productName' element={<ProductDetail/>}/>
+          <Route path=':productName' element={<ProductContextProvider><ProductDetail/></ProductContextProvider>}/>
           <Route path='' element={<ProductContextProvider><Products/></ProductContextProvider>}/>
         </Route>
         <Route path='login' element={<SignIn/>}/>

@@ -7,14 +7,27 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { Box } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import { ProductContext } from './ProductContext';
+
 function ProductCard(props){
+    const productValue = useContext(ProductContext);
+
+    function handleProductNavigation(e, product){
+        productValue.setUrlNavigation(["productos",product]);
+    }
+
     return(
+
         <Card sx={{ maxWidth: 345 }}>
-            <CardMedia
-                sx={{ height:220 }}
-                image={props.img}
-                title="green iguana"
-            />
+            <Link to={props.title} state={{prod:props.product }} onClick={e=>handleProductNavigation(e, props.title)}>
+                <CardMedia
+                    sx={{ height:220 }}
+                    image={props.img}
+                    title="green iguana"
+                />
+            </Link>
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                 {props.title}
@@ -22,12 +35,15 @@ function ProductCard(props){
                 <Typography variant="body2" color="text.secondary">
                 {props.description}
                 </Typography>
-                <Box sx={{display:"flex", alignItems:"center"}}>
-                    <AttachMoneyIcon fontSize='medium' color='black'/>
+                <Box sx={{display:"flex", alignItems:"center", marginTop:"10px"}}>
                     <Typography variant="h5" color="black" sx={{display:"inline", fontWeight:"bold"}}>
                     {props.price}
                     </Typography>
+                    <AttachMoneyIcon fontSize='medium' color='black'/>
                 </Box>
+                <Typography variant="h5" color="black" sx={{display:"inline", fontWeight:"bold"}}>
+                    Stock: {props.stock}
+                </Typography>
             </CardContent>
             <CardActions>
                 <Button size="small">Añadir al carrito</Button>
