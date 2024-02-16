@@ -7,6 +7,8 @@ import Contact from './Contact';
 import Products from './Products';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
+import PerfilForm from './PerfilForm';
+
 import { Routes, Route, BrowserRouter} from 'react-router-dom';
 import { ProductContextProvider } from './ProductContext';
 import { ProductDetail } from './ProductDetail';
@@ -24,6 +26,7 @@ root.render(
         </Route>
         <Route path='login' element={<SignIn/>}/>
         <Route path='register' element={<SignUp/>}/>
+        <Route path='perfil' element={<PerfilForm/>}></Route>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

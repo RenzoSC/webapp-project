@@ -14,15 +14,12 @@ class ExtraDataUser(models.Model):
 class Direccion(models.Model):
     '''
     Tabla modelo para almacenar direcciones
-    - Pueden ser de Facturación o de envío -
     '''
-    DIRTYPE = {'billing':'FACTURACIÓN', 'envio':'ENVÍO'}
     dir_user = models.ForeignKey(User, on_delete= models.CASCADE)
     dir_calle = models.CharField(max_length=100)
     dir_ciudad = models.CharField(max_length=100)
-    dir_pais = models.CharField(max_length=100)
+    dir_provincia = models.CharField(max_length=100, default='Cordoba')
     dir_codigopostal = models.IntegerField()
-    dir_type = models.CharField(max_length = 20, choices=DIRTYPE, default='FACTURACIÓN' )
 
 class ProductCategory(models.Model):
     CATEGORY_CHOICES = [

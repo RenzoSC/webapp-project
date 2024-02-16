@@ -13,10 +13,13 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { client } from "./axiosConfig";
+import { useNavigate } from "react-router-dom";
 
 const pages = ["Productos", "Contactos", "Blog"];
 
 function ResponsiveNavBar() {
+
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -42,6 +45,11 @@ function ResponsiveNavBar() {
       console.log("logout");
       window.location.reload();
     }).catch((error)=>{console.log(error)})
+  }
+
+  function handlePerfil(e){
+    setAnchorElUser(null);
+    navigate("/perfil");
   }
 
   const [currentUser, setCurrentUser] = React.useState(null);
@@ -115,7 +123,7 @@ function ResponsiveNavBar() {
           open={Boolean(anchorElUser)}
           onClose={handleCloseUserMenu}
         >
-          <MenuItem onClick={handleCloseUserMenu}>
+          <MenuItem onClick={e=>handlePerfil(e)}>
             <Typography textAlign="center">Perfil</Typography>
           </MenuItem>
           <MenuItem onClick={handleCloseUserMenu}>
