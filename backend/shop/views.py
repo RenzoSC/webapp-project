@@ -1,8 +1,8 @@
 from django.shortcuts import render,redirect
 
 from rest_framework import viewsets
-from .serializer import ProductSerializer, UserLoginSerializer, UserRegisterSerializer, UserSerializer
-from .models import Product, ProductCategory
+from .serializer import ProductSerializer, UserLoginSerializer, UserRegisterSerializer, UserSerializer, DirectionSerializer, ExtraDataSerializer
+from .models import Product, ProductCategory, ExtraDataUser,Direccion
 
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm  #formularios para creación y login de usuario
 from django.contrib.auth.models import User
@@ -157,4 +157,25 @@ class ProductsView(APIView):
         products = Product.objects.all()
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
-        
+
+class DirectionView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+
+    def get(self, request):
+        directions = Direccion.objects.all()
+        serializer = DirectionSerializer(directions, many=True)
+        return Response(serializer.data)
+
+class ExtraDataView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+    def get(self, request, id):
+        try:
+            extradata = ExtraDataUser.objects.filter(user_id=id)
+            serializer = ExtraDataSerializer(extradata, many=True)
+            if serializer.data != []:
+                return Response(serializer.data)
+            return Response("No existen datos para este usuario")
+        except:
+            return Response({"error": "Ocurrió un error"})

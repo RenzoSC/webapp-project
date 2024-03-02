@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product
+from .models import Product, ExtraDataUser, Direccion
 
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.models import User
@@ -33,4 +33,15 @@ class UserLoginSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
-        fields = ['email', 'username']
+        fields = ['id','email', 'username']
+
+class DirectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Direccion
+        fields=['dir_calle','dir_ciudad','dir_provincia','dir_codigopostal']
+
+class ExtraDataSerializer(serializers.ModelSerializer):
+    user_dir = DirectionSerializer(required=False)
+    class Meta:
+        model= ExtraDataUser
+        fields=['user_id','numero_telefono','user_dir']

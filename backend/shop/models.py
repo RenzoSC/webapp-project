@@ -2,7 +2,17 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 # Create your models here.
+class Direccion(models.Model):
+    '''
+    Tabla modelo para almacenar direcciones
+    '''
+    dir_calle = models.CharField(max_length=100)
+    dir_ciudad = models.CharField(max_length=100)
+    dir_provincia = models.CharField(max_length=100, default='Cordoba')
+    dir_codigopostal = models.IntegerField()
 
+    def __str__(self):
+        return f'id: {self.id} - {self.dir_calle}, {self.dir_ciudad}, {self.dir_provincia}'
 class ExtraDataUser(models.Model):
     '''
     Tabla modelo que almacena datos extra del usuario
@@ -10,16 +20,7 @@ class ExtraDataUser(models.Model):
     '''
     user_id = models.ForeignKey(User, on_delete= models.CASCADE)
     numero_telefono = models.CharField(max_length=15, help_text='Ingrese su número de teléfono')
-
-class Direccion(models.Model):
-    '''
-    Tabla modelo para almacenar direcciones
-    '''
-    dir_user = models.ForeignKey(User, on_delete= models.CASCADE)
-    dir_calle = models.CharField(max_length=100)
-    dir_ciudad = models.CharField(max_length=100)
-    dir_provincia = models.CharField(max_length=100, default='Cordoba')
-    dir_codigopostal = models.IntegerField()
+    user_dir = models.ForeignKey(Direccion, on_delete=models.CASCADE)
 
 class ProductCategory(models.Model):
     CATEGORY_CHOICES = [
