@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, ExtraDataUser, Direccion
+from .models import Product, ExtraDataUser
 
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.models import User
@@ -35,13 +35,19 @@ class UserSerializer(serializers.ModelSerializer):
         model = UserModel
         fields = ['id','email', 'username']
 
-class DirectionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model=Direccion
-        fields=['dir_calle','dir_ciudad','dir_provincia','dir_codigopostal']
-
 class ExtraDataSerializer(serializers.ModelSerializer):
-    user_dir = DirectionSerializer(required=False)
     class Meta:
         model= ExtraDataUser
-        fields=['user_id','numero_telefono','user_dir']
+        fields=['user_id','user_mail','numero_telefono','dir_calle','dir_ciudad','dir_provincia','dir_codigopostal']
+    
+    def update(self, instance, validated_data):
+        print(instance)
+        print(validated_data)
+        instance.numero_telefono = validated_data.get('numero_telefono', instance.numero_telefono)
+        instance.user_mail = validated_data.get('user_mail', instance.user_mail)
+        instance.dir_calle = validated_data.get('dir_calle', instance.dir_calle)
+        instance.dir_ciudad = validated_data.get('dir_ciudad', instance.dir_ciudad)
+        instance.dir_provincia = validated_data.get('dir_provincia', instance.dir_provincia)
+        instance.dir_codigopostal = validated_data.get('dir_codigopostal', instance.dir_codigopostal)
+        instance.save()
+        return instance

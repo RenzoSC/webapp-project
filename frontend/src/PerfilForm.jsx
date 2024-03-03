@@ -1,6 +1,6 @@
 import Footbar from "./Footbar";
 import ResponsiveNavBar from "./Navbar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { client } from "./axiosConfig";
 
@@ -10,7 +10,62 @@ function PerfilForm() {
   const [calle, setCalle] = useState("");
   const [email, setEmail] = useState("");
   const [tel, setTel] = useState("");
+  const [postal, setPostal] = useState(0);
+  const [user_extra, setExtra] = useState({
+    provincia: "No hay dirección registrada",
+    ciudad: "No hay dirección registrada",
+    calle: "No hay dirección registrada",
+    postal: "",
+    tel: "No hay telefono registrado",
+    email: "No hay email",
+  });
   const navigate = useNavigate();
+
+  useEffect(() => {
+    client
+      .get("http://127.0.0.1:8000/api/user")
+      .then((req) => {
+        let user_id = req.data.user.id;
+        client
+          .get(`http://127.0.0.1:8000/api/extra-data/${user_id}`)
+          .then((extra_data) => {
+            let user_extra_data = extra_data.data[0];
+            setExtra({
+              provincia: user_extra_data["dir_provincia"],
+              ciudad: user_extra_data["dir_ciudad"],
+              calle: user_extra_data["dir_calle"],
+              postal: user_extra_data["dir_codigopostal"],
+              tel: user_extra_data["numero_telefono"],
+              email: user_extra_data["user_mail"],
+            });
+          })
+          .catch((e) => console.log(e));
+      })
+      .catch((e) => console.log(e));
+  }, []);
+
+  function HandleUpdate(e) {
+    e.preventDefault();
+    client
+      .get("http://127.0.0.1:8000/api/user")
+      .then((req) => {
+        let user_id = req.data.user.id;
+        client.put(`http://127.0.0.1:8000/api/extra-data/${user_id}`, {
+          user_id: parseInt(user_id),
+          numero_telefono: tel,
+          user_mail: email,
+          dir_calle: calle,
+          dir_ciudad: ciudad,
+          dir_provincia: provincia,
+          dir_codigopostal: postal,
+        })
+        .then(r=>{
+          console.log(r);
+        })
+        .catch(e=>console.log(e));
+      })
+      .catch((e) => console.log(e));
+  }
 
   return (
     <div className="flex flex-col h-screen">
@@ -28,7 +83,7 @@ function PerfilForm() {
                 htmlFor="actualEmail"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                Email
+                Email de facturación
               </label>
               <div className="mt-2">
                 <input
@@ -38,7 +93,7 @@ function PerfilForm() {
                   autoComplete="email"
                   readOnly
                   className="block w-full rounded-md border-0 p-1.5  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 focus:outline-none"
-                  placeholder="Email"
+                  placeholder={user_extra.email}
                 />
               </div>
             </div>
@@ -57,7 +112,7 @@ function PerfilForm() {
                   autoComplete="telefono"
                   readOnly
                   className="block w-full rounded-md border-0 p-1.5  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 focus:outline-none"
-                  placeholder="Telefono de contacto"
+                  placeholder={user_extra.tel}
                 />
               </div>
             </div>
@@ -76,7 +131,7 @@ function PerfilForm() {
                   autoComplete="provincia"
                   readOnly
                   className="block w-full rounded-md border-0 p-1.5  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 focus:outline-none"
-                  placeholder="Provincia"
+                  placeholder={user_extra.provincia}
                 />
               </div>
             </div>
@@ -95,7 +150,7 @@ function PerfilForm() {
                   autoComplete="ciudad"
                   readOnly
                   className="block w-full rounded-md border-0 p-1.5  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 focus:outline-none"
-                  placeholder="Ciudad"
+                  placeholder={user_extra.ciudad}
                 />
               </div>
             </div>
@@ -115,7 +170,7 @@ function PerfilForm() {
                     autoComplete="calle"
                     readOnly
                     className="block w-full rounded-md border-0 p-1.5  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 focus:outline-none"
-                    placeholder="Calle"
+                    placeholder={user_extra.calle}
                   />
                 </div>
               </div>
@@ -135,8 +190,8 @@ function PerfilForm() {
                     autoComplete="postal"
                     readOnly
                     className="block w-full rounded-md border-0 p-1.5  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 focus:outline-none"
-                    placeholder="Codigo postal"
-                    />
+                    placeholder={user_extra.postal}
+                  />
                 </div>
               </div>
             </div>
@@ -149,13 +204,17 @@ function PerfilForm() {
             </h2>
           </div>
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" method="POST">
+            <form
+              className="space-y-6"
+              method="PUT"
+              onSubmit={(e) => HandleUpdate(e)}
+            >
               <div>
                 <label
                   htmlFor="email"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Email
+                  Email de facturación
                 </label>
                 <div className="mt-2">
                   <input
@@ -266,14 +325,14 @@ function PerfilForm() {
                   </label>
                   <div className="mt-2">
                     <input
-                      type="text"
+                      type="number"
                       id="postal"
                       name="postal"
                       autoComplete="postal"
                       required
                       className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
                       onChange={(e) => {
-                        setCalle(e.target.value);
+                        setPostal(parseInt(e.target.value));
                       }}
                     />
                   </div>

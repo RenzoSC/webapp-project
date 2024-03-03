@@ -1,8 +1,8 @@
 from django.shortcuts import render,redirect
 
 from rest_framework import viewsets
-from .serializer import ProductSerializer, UserLoginSerializer, UserRegisterSerializer, UserSerializer, DirectionSerializer, ExtraDataSerializer
-from .models import Product, ProductCategory, ExtraDataUser,Direccion
+from .serializer import ProductSerializer, UserLoginSerializer, UserRegisterSerializer, UserSerializer, ExtraDataSerializer
+from .models import Product, ProductCategory, ExtraDataUser
 
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm  #formularios para creación y login de usuario
 from django.contrib.auth.models import User
@@ -12,6 +12,8 @@ from rest_framework.authentication import SessionAuthentication, TokenAuthentica
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
+
+from rest_framework.decorators import api_view
 
 from .validation import custom_validation, validate_email, validate_password, validate_username
 
@@ -158,18 +160,8 @@ class ProductsView(APIView):
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
 
-class DirectionView(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
-
-    def get(self, request):
-        directions = Direccion.objects.all()
-        serializer = DirectionSerializer(directions, many=True)
-        return Response(serializer.data)
-
 class ExtraDataView(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    authentication_classes = (TokenAuthentication,)
     def get(self, request, id):
         try:
             extradata = ExtraDataUser.objects.filter(user_id=id)
@@ -179,3 +171,15 @@ class ExtraDataView(APIView):
             return Response("No existen datos para este usuario")
         except:
             return Response({"error": "Ocurrió un error"})
+        
+    def put(self, request, id):
+        try:
+            extradata= ExtraDataUser.objects.filter(user_id=id).first()
+            serializer = ExtraDataSerializer(instance=extradata, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            else:
+                return Response("no es valido wachin")
+        except Exception as e:
+            return Response({"error": f"{str(e)}"})
