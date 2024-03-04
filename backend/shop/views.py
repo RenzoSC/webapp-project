@@ -1,8 +1,8 @@
 from django.shortcuts import render,redirect
 
 from rest_framework import viewsets
-from .serializer import ProductSerializer, UserLoginSerializer, UserRegisterSerializer, UserSerializer, ExtraDataSerializer
-from .models import Product, ProductCategory, ExtraDataUser
+from .serializer import ProductSerializer, UserLoginSerializer, UserRegisterSerializer, UserSerializer, ExtraDataSerializer, ProductFavSerializer
+from .models import Product, ProductCategory, ExtraDataUser, ProductosFav
 
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm  #formularios para creación y login de usuario
 from django.contrib.auth.models import User
@@ -123,7 +123,7 @@ class UserView(APIView):
         return Response({'user':serializer.data}, status=status.HTTP_200_OK)
 
 class ProductDetail(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.AllowAny,)
     authentication_classes = (SessionAuthentication,)
 
     def get(self,request, categ,subcateg=''):
@@ -146,7 +146,7 @@ class ProductDetail(APIView):
         return Response(serializer.data)
     
 class ProductsView(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.AllowAny,)
     authentication_classes = (SessionAuthentication,)
     def get(self, request, name=None):
         if(name):
@@ -181,5 +181,17 @@ class ExtraDataView(APIView):
                 return Response(serializer.data)
             else:
                 return Response("no es valido wachin")
+        except Exception as e:
+            return Response({"error": f"{str(e)}"})
+
+class ProdFavsView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+
+    def get(self, request, id):
+        try:
+            favs = ProductosFav.objects.filter(user_id=id)
+            serializer = ProductFavSerializer(favs, many=True)
+            return Response(serializer.data)
         except Exception as e:
             return Response({"error": f"{str(e)}"})

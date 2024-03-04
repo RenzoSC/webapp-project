@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, ExtraDataUser
+from .models import Product, ExtraDataUser, ProductosFav
 
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.models import User
@@ -41,8 +41,6 @@ class ExtraDataSerializer(serializers.ModelSerializer):
         fields=['user_id','user_mail','numero_telefono','dir_calle','dir_ciudad','dir_provincia','dir_codigopostal']
     
     def update(self, instance, validated_data):
-        print(instance)
-        print(validated_data)
         instance.numero_telefono = validated_data.get('numero_telefono', instance.numero_telefono)
         instance.user_mail = validated_data.get('user_mail', instance.user_mail)
         instance.dir_calle = validated_data.get('dir_calle', instance.dir_calle)
@@ -51,3 +49,9 @@ class ExtraDataSerializer(serializers.ModelSerializer):
         instance.dir_codigopostal = validated_data.get('dir_codigopostal', instance.dir_codigopostal)
         instance.save()
         return instance
+
+class ProductFavSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= ProductosFav
+        fields =['user_id','product_id']
+        depth = 1
