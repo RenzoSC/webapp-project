@@ -99,4 +99,10 @@ class ProductosPedido(models.Model):
 
     def __str__(self):
         return f'Detalle Producto #{self.id} - Detalle Pedido #{self.detalle_pedido.id}'
-    
+
+class ProductosFav(models.Model):
+    '''
+    Tabla modelo que contiene los productos favoritos por usuario
+    '''
+    user_id= models.ForeignKey(User, on_delete=models.CASCADE)
+    product_id = models.ForeignKey(Product, on_delete = models.CASCADE)
