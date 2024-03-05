@@ -12,6 +12,7 @@ import PerfilForm from './PerfilForm';
 import { Routes, Route, BrowserRouter} from 'react-router-dom';
 import { ProductContextProvider } from './ProductContext';
 import { ProductDetail } from './ProductDetail';
+import ProdsFav from './ProdsFav';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -27,6 +28,10 @@ root.render(
         <Route path='login' element={<SignIn/>}/>
         <Route path='register' element={<SignUp/>}/>
         <Route path='perfil' element={<PerfilForm/>}></Route>
+        <Route path='productos-fav'>
+          <Route path=':productName'element={<ProductContextProvider><ProductDetail/></ProductContextProvider>}/>
+          <Route path='' element={<ProductContextProvider><ProdsFav/></ProductContextProvider>} />
+        </Route>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

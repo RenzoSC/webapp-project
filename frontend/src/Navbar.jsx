@@ -52,6 +52,11 @@ function ResponsiveNavBar() {
     navigate("/perfil");
   }
 
+  function handleFav(e){
+    setAnchorElUser(null);
+    navigate("/productos-fav");
+  }
+
   const [currentUser, setCurrentUser] = React.useState(null);
   React.useEffect(()=>{
     client.get("/api/user").then((res)=>{
@@ -126,7 +131,7 @@ function ResponsiveNavBar() {
           <MenuItem onClick={e=>handlePerfil(e)}>
             <Typography textAlign="center">Perfil</Typography>
           </MenuItem>
-          <MenuItem onClick={handleCloseUserMenu}>
+          <MenuItem onClick={e=>handleFav(e)}>
             <Typography textAlign="center">Favoritos</Typography>
           </MenuItem>
           <MenuItem onClick={handleCloseUserMenu}>

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Pedido, ProductCategory, ExtraDataUser
+from .models import Product, Pedido, ProductCategory, ExtraDataUser, ProductosFav
 
 '''
 El codigo de aca es para registrar los modelos de manera tal que podamos interactuar con ellos 
@@ -18,9 +18,11 @@ class CategoryAdmin(admin.ModelAdmin):
 class ExtraDataAdmin(admin.ModelAdmin):
     list_display = ['user_id', 'user_mail', 'numero_telefono', 'dir_calle', 'dir_ciudad', 'dir_provincia', 'dir_codigopostal']
 
-
+class FavProductsAdmin(admin.ModelAdmin):
+    list_display = ['user_id', 'product_id']
 
 admin.site.register(Product, ShopAdmin) 
 admin.site.register(Pedido, PedidoAdmin)
 admin.site.register(ProductCategory, CategoryAdmin)
 admin.site.register(ExtraDataUser, ExtraDataAdmin)
+admin.site.register(ProductosFav, FavProductsAdmin)
