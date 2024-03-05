@@ -7,9 +7,10 @@ import { Typography } from "@mui/material";
 
 function ProdsFav(){
     const [productList, setProductList] = useState([]);
-    let productsFav = [];
+    
     
     useEffect(()=>{
+        let productsFav = [];
         client.get("http://127.0.0.1:8000/api/user")
         .then((req)=>{
             let user_id = req.data.user.id;
