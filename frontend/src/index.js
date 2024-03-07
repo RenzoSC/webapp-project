@@ -11,29 +11,33 @@ import PerfilForm from './PerfilForm';
 
 import { Routes, Route, BrowserRouter} from 'react-router-dom';
 import { ProductContextProvider } from './ProductContext';
+import { CarritoContextProvider } from './CarritoContext';
 import { ProductDetail } from './ProductDetail';
 import ProdsFav from './ProdsFav';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path='' element={<Home/>}/>
-        <Route path='contactos' element={<Contact/>}/>
-        <Route path='productos'>
-          <Route path=':productName' element={<ProductContextProvider><ProductDetail/></ProductContextProvider>}/>
-          <Route path='' element={<ProductContextProvider><Products/></ProductContextProvider>}/>
-        </Route>
-        <Route path='login' element={<SignIn/>}/>
-        <Route path='register' element={<SignUp/>}/>
-        <Route path='perfil' element={<PerfilForm/>}></Route>
-        <Route path='productos-fav'>
-          <Route path=':productName'element={<ProductContextProvider><ProductDetail/></ProductContextProvider>}/>
-          <Route path='' element={<ProductContextProvider><ProdsFav/></ProductContextProvider>} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <CarritoContextProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path='' element={<Home/>}/>
+          <Route path='contactos' element={<Contact/>}/>
+          <Route path='productos'>
+            <Route path=':productName' element={<ProductContextProvider><ProductDetail/></ProductContextProvider>}/>
+            <Route path='' element={<ProductContextProvider><Products/></ProductContextProvider>}/>
+          </Route>
+          <Route path='login' element={<SignIn/>}/>
+          <Route path='register' element={<SignUp/>}/>
+          <Route path='perfil' element={<PerfilForm/>}></Route>
+          <Route path='productos-fav'>
+            <Route path=':productName'element={<ProductContextProvider><ProductDetail/></ProductContextProvider>}/>
+            <Route path='' element={<ProductContextProvider><ProdsFav/></ProductContextProvider>} />
+          </Route>
+          <Route path='carrito'/>
+        </Routes>
+      </BrowserRouter>
+    </CarritoContextProvider>
   </React.StrictMode>
 );
 
