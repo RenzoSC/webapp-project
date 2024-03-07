@@ -5,8 +5,7 @@ import ProductCard from "./ProductCard";
 import ProductNavigator from "./ProductNavigator";
 import axios from "axios"
 import { ProductContext } from "./ProductContext";
-import { Fab } from "@mui/material";
-import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
+import Carrito from "./Carrito";
 
 function Products() {
     let productValue = useContext(ProductContext);
@@ -25,11 +24,7 @@ function Products() {
         <div className="flex flex-col h-screen">
         <ResponsiveNavBar/>
         <main className="flex-grow flex">
-            <div className="fixed right-4 bottom-4">
-                <Fab>
-                    <LocalGroceryStoreIcon></LocalGroceryStoreIcon>
-                </Fab>
-            </div>
+            <Carrito/>
             <div className="w-1/4 h-screen flex items-start pt-10 sticky top-0">
                 <ProductNavigator/>
             </div>

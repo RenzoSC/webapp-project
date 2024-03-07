@@ -10,12 +10,21 @@ import { Box } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { ProductContext } from './ProductContext';
+import { CarritoContext } from './CarritoContext';
 
 function ProductCard(props){
     const productValue = useContext(ProductContext);
+    const carritoValue = useContext(CarritoContext);
+
 
     function handleProductNavigation(e, product){
         productValue.setUrlNavigation(["productos",product]);
+    }
+
+    function addCarrito(product){
+        let prevCart = carritoValue.carritoList;
+        prevCart.push(product);
+        carritoValue.setCarritoList(prevCart);
     }
 
     return(
@@ -46,7 +55,7 @@ function ProductCard(props){
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="small">Añadir al carrito</Button>
+                <Button size="small" caca="hola" onClick={()=>addCarrito(props.product)}>Añadir al carrito</Button>
                 <Button size="small">Añadir a favoritos</Button>
             </CardActions>
         </Card>
