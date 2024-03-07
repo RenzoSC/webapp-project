@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import ProductCard from "./ProductCard";
 import { client } from "./axiosConfig";
 import { Typography } from "@mui/material";
+import { Fab } from "@mui/material";
+import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
 
 function ProdsFav(){
     const [productList, setProductList] = useState([]);
@@ -32,6 +34,11 @@ function ProdsFav(){
             <ResponsiveNavBar/>
             <Typography className="mt-3 text-center" variant="h2">Productos Favoritos</Typography>
             <main className="flex-grow flex">
+                <div className="fixed right-4 bottom-4">
+                    <Fab>
+                        <LocalGroceryStoreIcon></LocalGroceryStoreIcon>
+                    </Fab>
+                </div>
                 <div className="grid grid-cols-2 grid-rows-3 sm:grid-cols-3 xl:grid-cols-4 gap-4 p-4 flex-grow">
                     {productList.map((p,i)=>{
                         return <ProductCard key={i} product={p} title={p.product_name} description={p.product_description} img={p.product_image} price={p.product_price} stock={p.product_stock}/>
