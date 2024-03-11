@@ -8,6 +8,7 @@ import Products from './Products';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import PerfilForm from './PerfilForm';
+import CarritoPage from './CarritoPage';
 
 import { Routes, Route, BrowserRouter} from 'react-router-dom';
 import { ProductContextProvider } from './ProductContext';
@@ -34,7 +35,7 @@ root.render(
             <Route path=':productName'element={<ProductContextProvider><ProductDetail/></ProductContextProvider>}/>
             <Route path='' element={<ProductContextProvider><ProdsFav/></ProductContextProvider>} />
           </Route>
-          <Route path='carrito'/>
+          <Route path='carrito' element={<CarritoPage/>}/>
         </Routes>
       </BrowserRouter>
     </CarritoContextProvider>
