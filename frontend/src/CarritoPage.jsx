@@ -1,7 +1,7 @@
 import Footbar from "./Footbar";
 import ResponsiveNavBar from "./Navbar";
 import { CarritoContext } from "./CarritoContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -13,12 +13,21 @@ import Button from '@mui/material/Button';
 
 function CarritoPage(){
     let carritoValue = useContext(CarritoContext);
+    const [forceUpdate, setForceUpdate] = useState(false);
 
     function handleDelete(index){
         let carritoPrev = carritoValue.carritoList;
-        let carrito = carritoPrev.filter((e,i)=>i!==index);
+        let carrito;
+        if(carritoPrev[index].quantity ===1){
+            carrito = carritoPrev.filter((e,i)=>i!==index);
+        }else{
+            carritoPrev[index].quantity -=1;
+            carrito = carritoPrev;
+        }
         sessionStorage.setItem('carrito', JSON.stringify(carrito));
         carritoValue.setCarritoList(carrito);
+        console.log(carritoValue.carritoList);
+        setForceUpdate(!forceUpdate);
     }
 
     return (
@@ -36,7 +45,7 @@ function CarritoPage(){
                             />
                             <Box sx={{ display: 'flex', maxHeight:"180px", justifyContent:"space-between", alignItems:"center", width:"100%", paddingRight:"20px" }}>
                                 <CardContent>
-                                    <Typography variant="h4" component="div">{p.product_name}</Typography>
+                                    <Typography variant="h4" component="div">{p.product_name +"   x" + p.quantity}</Typography>
                                     <Typography variant="h6" component="div">{p.product_description}</Typography>
                                     <Box sx={{display:"flex", alignItems:"center", marginTop:"10px"}}>
                                         <Typography variant="h6" color="black" sx={{display:"inline", fontWeight:"bold"}}>

@@ -22,8 +22,18 @@ function ProductCard(props){
     }
 
     function addCarrito(product){
+        let found = false;
         let prevCart = carritoValue.carritoList;
-        prevCart.push(product);
+        for (let i = 0; i < prevCart.length; i++) {
+            if(prevCart[i].product_name === product.product_name){
+                prevCart[i].quantity +=1;
+                found = true;
+            }
+        }
+        if(!found){
+            product.quantity = 1;
+            prevCart.push(product);
+        }
         sessionStorage.setItem('carrito', JSON.stringify(prevCart));
         carritoValue.setCarritoList(prevCart);
     }
