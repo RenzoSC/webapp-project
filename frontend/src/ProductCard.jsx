@@ -24,6 +24,7 @@ function ProductCard(props){
     function addCarrito(product){
         let prevCart = carritoValue.carritoList;
         prevCart.push(product);
+        sessionStorage.setItem('carrito', JSON.stringify(prevCart));
         carritoValue.setCarritoList(prevCart);
     }
 

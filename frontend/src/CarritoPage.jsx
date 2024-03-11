@@ -15,18 +15,20 @@ function CarritoPage(){
     let carritoValue = useContext(CarritoContext);
 
     function handleDelete(index){
-        let carrito = carritoValue.carritoList.filter((e,i)=>i!==index);
+        let carritoPrev = carritoValue.carritoList;
+        let carrito = carritoPrev.filter((e,i)=>i!==index);
+        sessionStorage.setItem('carrito', JSON.stringify(carrito));
         carritoValue.setCarritoList(carrito);
     }
 
     return (
         <div className="flex flex-col h-screen">
           <ResponsiveNavBar/>
-          <main className="flex-grow flex flex-col px-4">
+          <main className="flex-grow flex flex-col px-4 pt-4">
             {
                 carritoValue.carritoList.map((p,i)=>{
                     return (
-                        <Card variant="outlined" sx={{ display: 'flex' , marginTop:'10px'}} key={i}>
+                        <Card variant="outlined" sx={{ display: 'flex' , marginBottom:'1rem'}} key={i}>
                             <CardMedia
                                 sx={{ width:180, height:180 }}
                                 image={p.product_image}
